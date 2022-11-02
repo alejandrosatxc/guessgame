@@ -31,6 +31,7 @@ h2 {
 main {
     display: flex;
     height: 80%;
+    background-color: aquamarine;
     flex-direction: row;
     flex-grow: 1;
     justify-content: center;
@@ -43,8 +44,11 @@ main {
 
 #display {
     border: 5px solid black;
+    border-radius: 10px;
     height: 200px;
     width: 50%;
+    margin: 0 100px;
+    background-color: darkcyan;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -53,6 +57,14 @@ main {
 
 #scoreboard {
     border: 5px solid black;
+    border-radius: 10px;
     width: 50%;
     height: 200px;
+    margin: 0 100px;
+    background-color: darkcyan;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
 }
