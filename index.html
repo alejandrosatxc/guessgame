@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css" />
+    <title>Document</title>
+</head>
+
+<body>
+    <header>
+        <h1>Guessing Game</h1>
+        <button id="start-btn">Start</button>
+    </header>
+    <main>
+        <div id="display">
+            <h2 id="challenge"></h2>
+            <h2 id="result"></h2>
+        </div>
+        <div id="scoreboard">
+            <div id="stats" data-wins="0" data-losses="0">
+                Wins:<p id="wins"></p>
+                Losses:<p id="losses"></p>
+            </div>
+            <button id="reset-btn">Reset Score</button>
+            <div id="game-timer">
+                <h3>Time Remaining:</h3>
+                <p id="time-remaining"></p>
+            </div>
+
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+
+</html>
