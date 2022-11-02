@@ -38,8 +38,24 @@ main {
     align-items: center;
 }
 
-#start-btn {
+#start-btn,
+#reset-btn {
+    border: 2px solid black;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
     margin: 10px 0;
+    height: 40px;
+    width: 100px;
+    background: rgb(34,193,195);
+    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
+}
+
+#start-btn:hover,
+#reset-btn:hover {
+    cursor: pointer;
 }
 
 #display {
