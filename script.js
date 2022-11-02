@@ -66,6 +66,10 @@ function startGame(e) {
 
 
     //Begin Listening for key inputs
+    //Note: Since we are adding this event listener everytime user clicks start button,
+    //It may seem like we are adding multiple event listeners, however, according to
+    //documentation, adding multiple duplicate event listeners will discard the old one,
+    //eliminating the need manually removing new ones. 
     window.addEventListener("keyup", function (e) {
         //If a correct key is pressed
         if(challenge.missing_chars.includes(e.key)) {
@@ -74,12 +78,22 @@ function startGame(e) {
             challenge.missing_chars = challenge.missing_chars.filter((missing) => missing !== e.key)
             console.log(challenge.missing_chars)
 
-            //TODO: Update the challenge string
-            // for(var i = 0; i < challenge.word.length; i++) {
-            //     if(challenge.random_word[i] === '_') {
-            //         challenge.word += 
-            //     }
-            // }
+            //Update the challenge string
+            var update = ''
+
+            //For loop essentially builds a new string with the correct key replacing 
+            //the "_"s where ever necessary
+            for(var i = 0; i < challenge.random_word.length; i++) {
+                if(challenge.word[i] === '_' && challenge.random_word[i] === e.key) {
+                    update += challenge.random_word[i]
+                } else {
+                    update += challenge.word[i]
+                }
+            }
+
+            //Update the challenge string that is displayed to the user
+            challenge.word = update
+            challangeEl.textContent = challenge.word
 
             //Win Condition: When there are no more characters in missing_chars
             if(challenge.missing_chars.length === 0) {
