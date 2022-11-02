@@ -47,7 +47,7 @@ main {
     border-radius: 10px;
     height: 200px;
     width: 50%;
-    margin: 0 100px;
+    margin: 0 50px;
     background-color: darkcyan;
     display: flex;
     flex-direction: column;
@@ -60,7 +60,7 @@ main {
     border-radius: 10px;
     width: 50%;
     height: 200px;
-    margin: 0 100px;
+    margin: 0 50px;
     background-color: darkcyan;
     display: flex;
     flex-direction: column;
