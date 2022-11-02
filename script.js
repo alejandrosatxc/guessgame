@@ -6,12 +6,10 @@ var winsEl = document.querySelector("#wins")
 var lossesEl = document.querySelector("#losses")
 var timeRemaining = document.querySelector("#time-remaining")
 var challangeEl = document.querySelector('#challenge')
+var gameTimer = null //used for setInterval and clearInterval to start and stop game
 
 startBtn.addEventListener("click", startGame)
 resetBtn.addEventListener("click", resetScore)
-
-//winsEl.textContent = 0;
-//lossesEl.textContent = 0;
 
 //Load users highscores
 loadGame()
@@ -37,8 +35,11 @@ function startGame(e) {
     //Prevent default button behavior, this might be unecessary
     e.preventDefault()
 
-    //TODO: Stop/clear previous game if any
-
+    //Stop/clear previous game if any
+    //Lose Condition: If user starts a new game before the current one is over.
+    if(gameTimer !== null) {
+        endGame('Loss')
+    }
 
     //Clear previous results if any
     resultEl.textContent = ''
@@ -46,12 +47,12 @@ function startGame(e) {
     var secondsLeft = 10
     timeRemaining.textContent = secondsLeft
     secondsLeft--;
-    var gameTimer = setInterval(function () {
+    //gameTimer is a global variable
+    gameTimer = setInterval(function () {
         timeRemaining.textContent = secondsLeft
         secondsLeft--;
         //Lose Condition: If time runs out, game over
         if(secondsLeft === -1) {
-            clearInterval(gameTimer)
             endGame('Loss')
         }
     }, 1000)
@@ -82,7 +83,6 @@ function startGame(e) {
 
             //Win Condition: When there are no more characters in missing_chars
             if(challenge.missing_chars.length === 0) {
-                clearInterval(gameTimer)
                 endGame('Win')
             }
         }
@@ -117,6 +117,9 @@ function generateChallenge() {
 }
 
 function endGame(result) {
+    //Stop the gameTimer and set it to null
+    clearInterval(gameTimer)
+    gameTimer = null
     //Update user score
     if(result === "Win") {
         statsEl.dataset.wins++
