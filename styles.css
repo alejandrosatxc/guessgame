@@ -26,6 +26,7 @@ h1 {
 
 h2 {
     margin: 0;
+    text-align: center;
 }
 
 main {
@@ -61,7 +62,7 @@ main {
 #display {
     border: 5px solid black;
     border-radius: 10px;
-    height: 200px;
+    height: 250px;
     width: 50%;
     margin: 0 50px;
     background-color: darkcyan;
@@ -75,7 +76,7 @@ main {
     border: 5px solid black;
     border-radius: 10px;
     width: 50%;
-    height: 200px;
+    height: 250px;
     margin: 0 50px;
     background-color: darkcyan;
     display: flex;

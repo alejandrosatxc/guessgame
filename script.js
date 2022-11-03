@@ -3,6 +3,7 @@ var resetBtn = document.querySelector("#reset-btn")
 var resultEl = document.querySelector("#result")
 var statsEl = document.querySelector("#stats")
 var winsEl = document.querySelector("#wins")
+var highscoreEl = document.querySelector("#highscore")
 var lossesEl = document.querySelector("#losses")
 var timeRemaining = document.querySelector("#time-remaining")
 var challangeEl = document.querySelector('#challenge')
@@ -20,13 +21,16 @@ function loadGame() {
     //If there are no previous gameStats, 
     if(!gameStats) {
         //set wins and losses to 0
-        statsEl.dataset.wins = 0;
-        statsEl.dataset.losses = 0;
+        statsEl.dataset.highscore = 0
+        statsEl.dataset.wins = 0
+        statsEl.dataset.losses = 0
     } else { //Otherwise set wins and losses to previous gameStats
         var stats = JSON.parse(gameStats)
-        statsEl.dataset.wins = stats.wins;
-        statsEl.dataset.losses = stats.losses;
+        statsEl.dataset.highscore = stats.highscore
+        statsEl.dataset.wins = stats.wins
+        statsEl.dataset.losses = stats.losses
     }
+    highscoreEl.textContent = statsEl.dataset.highscore
     winsEl.textContent = statsEl.dataset.wins
     lossesEl.textContent = statsEl.dataset.losses
 }
@@ -46,11 +50,11 @@ function startGame(e) {
     //Start a timer
     var secondsLeft = 10
     timeRemaining.textContent = secondsLeft
-    secondsLeft--;
+    secondsLeft--
     //gameTimer is a global variable
     gameTimer = setInterval(function () {
         timeRemaining.textContent = secondsLeft
-        secondsLeft--;
+        secondsLeft--
         //Lose Condition: If time runs out, game over
         if(secondsLeft === -1) {
             endGame('Loss')
@@ -97,15 +101,18 @@ function startGame(e) {
 
             //Win Condition: When there are no more characters in missing_chars
             if(challenge.missing_chars.length === 0) {
-                endGame('Win')
+                endGame('Win', secondsLeft + 1) //plus 1 to fix a bug i dont wanna deal with
             }
         }
     })
 }
 
 function generateChallenge() {
+    //Create array continaing possible words to guess
     var wordbank = ['JavaScript', 'Coding', 'Python', 'HyperText', 'MarkUp', 'jquery']
+    //Get a random word from the wordbank
     var random_word = wordbank[Math.floor(Math.random() * wordbank.length)]
+    //Create an object to hold everything for the challenge
     var challenge = {
         random_word : random_word,
         word: '',
@@ -130,13 +137,17 @@ function generateChallenge() {
     return challenge
 }
 
-function endGame(result) {
+function endGame(result, highscore=0) {
     //Stop the gameTimer and set it to null
     clearInterval(gameTimer)
     gameTimer = null
     //Update user score
     if(result === "Win") {
         statsEl.dataset.wins++
+        if(highscore > statsEl.dataset.highscore) {
+            statsEl.dataset.highscore = highscore
+            highscoreEl.textContent = highscore
+        }
         winsEl.textContent = statsEl.dataset.wins
     } else if(result === "Loss") {
         statsEl.dataset.losses++
@@ -148,6 +159,7 @@ function endGame(result) {
 
     //Write game result to localStorage
     var gameStats = {
+        highscore: statsEl.dataset.highscore,
         wins: statsEl.dataset.wins,
         losses: statsEl.dataset.losses
     }
@@ -158,8 +170,10 @@ function endGame(result) {
 
 function resetScore() {
     localStorage.clear()
-    statsEl.dataset.wins = 0;
-    statsEl.dataset.losses = 0;
+    statsEl.dataset.wins = 0
+    statsEl.dataset.losses = 0
+    statsEl.dataset.highscore = 0
+    highscoreEl.textContent = statsEl.dataset.highscore
     winsEl.textContent = statsEl.dataset.wins
     lossesEl.textContent = statsEl.dataset.losses
 }
