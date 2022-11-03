@@ -1,13 +1,7 @@
 var statsEl = $("#stats")
 var gameTimer = null //used for setInterval and clearInterval to start and stop game
 
-$("#start-btn").on("click", startGame)
-$("#reset-btn").on("click", resetScore)
-
-//Load users highscores
-loadGame()
-
-function loadGame() {
+const loadGame = () => {
     //Read game stats from localStorage
     var gameStats = localStorage.getItem("guessGameStats")
     //If there are no previous gameStats, 
@@ -27,7 +21,7 @@ function loadGame() {
     $('#losses').text(statsEl.data('losses'))
 }
 
-function startGame() {
+const startGame = () => {
 
     //Stop/clear previous game if any
     //Lose Condition: If user starts a new game before the current one is over.
@@ -42,7 +36,7 @@ function startGame() {
     $('#time-remaining').text(secondsLeft)
     secondsLeft--
     //gameTimer is a global variable
-    gameTimer = setInterval(function () {
+    gameTimer = setInterval(() => {
         $('#time-remaining').text(secondsLeft)
         secondsLeft--
         //Lose Condition: If time runs out, game over
@@ -64,7 +58,7 @@ function startGame() {
     //It may seem like we are adding multiple event listeners, however, according to
     //documentation, adding multiple duplicate event listeners will discard the old one,
     //eliminating the need manually removing new ones. 
-    window.addEventListener("keyup", function (e) {
+    window.addEventListener("keyup", (e) => {
         //If a correct key is pressed
         if(challenge.missing_chars.includes(e.key)) {
 
@@ -97,7 +91,7 @@ function startGame() {
     })
 }
 
-function generateChallenge() {
+const generateChallenge = () => {
     //Create array continaing possible words to guess
     var wordbank = ['JavaScript', 'Coding', 'Python', 'HyperText', 'MarkUp', 'jquery']
     //Get a random word from the wordbank
@@ -127,7 +121,7 @@ function generateChallenge() {
     return challenge
 }
 
-function endGame(result, highscore=0) {
+const endGame = (result, highscore=0) => {
     //Stop the gameTimer and set it to null
     clearInterval(gameTimer)
     gameTimer = null
@@ -158,7 +152,7 @@ function endGame(result, highscore=0) {
     localStorage.setItem("guessGameStats", data)
 }
 
-function resetScore() {
+const resetScore = () => {
     localStorage.clear()
     statsEl.data().wins = 0
     statsEl.data().losses = 0
@@ -167,3 +161,9 @@ function resetScore() {
     $('#wins').text(statsEl.data().wins)
     $('#losses').text(statsEl.data().losses)
 }
+
+$("#start-btn").on("click", startGame)
+$("#reset-btn").on("click", resetScore)
+
+//Load users highscores
+loadGame()
