@@ -58,7 +58,7 @@ const startGame = () => {
     //It may seem like we are adding multiple event listeners, however, according to
     //documentation, adding multiple duplicate event listeners will discard the old one,
     //eliminating the need manually removing new ones. 
-    window.addEventListener("keyup", (e) => {
+    $(window).on("keyup", (e) => {
         //If a correct key is pressed
         if(challenge.missing_chars.includes(e.key)) {
 
@@ -125,6 +125,10 @@ const endGame = (result, highscore=0) => {
     //Stop the gameTimer and set it to null
     clearInterval(gameTimer)
     gameTimer = null
+
+    //Remove keyup eventListener
+    $(window).off("keyup")
+
     //Update user score
     if(result === "Win") {
         statsEl.data().wins++
