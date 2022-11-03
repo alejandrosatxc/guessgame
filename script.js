@@ -1,16 +1,8 @@
-var startBtn = document.querySelector("#start-btn")
-var resetBtn = document.querySelector("#reset-btn")
-var resultEl = document.querySelector("#result")
-var statsEl = document.querySelector("#stats")
-var winsEl = document.querySelector("#wins")
-var highscoreEl = document.querySelector("#highscore")
-var lossesEl = document.querySelector("#losses")
-var timeRemaining = document.querySelector("#time-remaining")
-var challangeEl = document.querySelector('#challenge')
+var statsEl = $("#stats")
 var gameTimer = null //used for setInterval and clearInterval to start and stop game
 
-startBtn.addEventListener("click", startGame)
-resetBtn.addEventListener("click", resetScore)
+$("#start-btn").on("click", startGame)
+$("#reset-btn").on("click", resetScore)
 
 //Load users highscores
 loadGame()
@@ -20,24 +12,22 @@ function loadGame() {
     var gameStats = localStorage.getItem("guessGameStats")
     //If there are no previous gameStats, 
     if(!gameStats) {
-        //set wins and losses to 0
-        statsEl.dataset.highscore = 0
-        statsEl.dataset.wins = 0
-        statsEl.dataset.losses = 0
-    } else { //Otherwise set wins and losses to previous gameStats
+        //set highscore, wins and losses to 0
+        statsEl.data('highscore', 0)
+        statsEl.data('wins', 0)
+        statsEl.data('losses', 0)
+    } else { //Otherwise set highscore, wins and losses to previous gameStats
         var stats = JSON.parse(gameStats)
-        statsEl.dataset.highscore = stats.highscore
-        statsEl.dataset.wins = stats.wins
-        statsEl.dataset.losses = stats.losses
+        statsEl.data('highscore', stats.highscore)
+        statsEl.data('wins', stats.wins)
+        statsEl.data('losses', stats.losses)
     }
-    highscoreEl.textContent = statsEl.dataset.highscore
-    winsEl.textContent = statsEl.dataset.wins
-    lossesEl.textContent = statsEl.dataset.losses
+    $('#highscore').text(statsEl.data('highscore'))
+    $('#wins').text(statsEl.data('wins'))
+    $('#losses').text(statsEl.data('losses'))
 }
 
-function startGame(e) {
-    //Prevent default button behavior, this might be unecessary
-    e.preventDefault()
+function startGame() {
 
     //Stop/clear previous game if any
     //Lose Condition: If user starts a new game before the current one is over.
@@ -46,14 +36,14 @@ function startGame(e) {
     }
 
     //Clear previous results if any
-    resultEl.textContent = ''
+    $('#result').text('')
     //Start a timer
     var secondsLeft = 10
-    timeRemaining.textContent = secondsLeft
+    $('#time-remaining').text(secondsLeft)
     secondsLeft--
     //gameTimer is a global variable
     gameTimer = setInterval(function () {
-        timeRemaining.textContent = secondsLeft
+        $('#time-remaining').text(secondsLeft)
         secondsLeft--
         //Lose Condition: If time runs out, game over
         if(secondsLeft === -1) {
@@ -65,7 +55,7 @@ function startGame(e) {
     let challenge = generateChallenge()
 
     //Display challenge string to user
-    challangeEl.textContent = challenge.word
+    $('#challenge').text(challenge.word)
     console.log(challenge.missing_chars)
 
 
@@ -97,7 +87,7 @@ function startGame(e) {
 
             //Update the challenge string that is displayed to the user
             challenge.word = update
-            challangeEl.textContent = challenge.word
+            $('#challenge').text(challenge.word)
 
             //Win Condition: When there are no more characters in missing_chars
             if(challenge.missing_chars.length === 0) {
@@ -143,25 +133,25 @@ function endGame(result, highscore=0) {
     gameTimer = null
     //Update user score
     if(result === "Win") {
-        statsEl.dataset.wins++
-        if(highscore > statsEl.dataset.highscore) {
-            statsEl.dataset.highscore = highscore
-            highscoreEl.textContent = highscore
+        statsEl.data().wins++
+        if(highscore > statsEl.data().highscore) {
+            statsEl.data().highscore = highscore
+            $('#highscore').text(highscore)
         }
-        winsEl.textContent = statsEl.dataset.wins
+        $('#wins').text(statsEl.data().wins)
     } else if(result === "Loss") {
-        statsEl.dataset.losses++
-        lossesEl.textContent = statsEl.dataset.losses
+        statsEl.data().losses++
+        $('#losses').text(statsEl.data().losses)
     }
 
     //Return result to user
-    resultEl.textContent = result
+    $('#result').text(result)
 
     //Write game result to localStorage
     var gameStats = {
-        highscore: statsEl.dataset.highscore,
-        wins: statsEl.dataset.wins,
-        losses: statsEl.dataset.losses
+        highscore: statsEl.data().highscore,
+        wins: statsEl.data().wins,
+        losses: statsEl.data().losses
     }
 
     var data = JSON.stringify(gameStats)
@@ -170,10 +160,10 @@ function endGame(result, highscore=0) {
 
 function resetScore() {
     localStorage.clear()
-    statsEl.dataset.wins = 0
-    statsEl.dataset.losses = 0
-    statsEl.dataset.highscore = 0
-    highscoreEl.textContent = statsEl.dataset.highscore
-    winsEl.textContent = statsEl.dataset.wins
-    lossesEl.textContent = statsEl.dataset.losses
+    statsEl.data().wins = 0
+    statsEl.data().losses = 0
+    statsEl.data().highscore = 0
+    $('#highscore').text(statsEl.data().highscore)
+    $('#wins').text(statsEl.data().wins)
+    $('#losses').text(statsEl.data().losses)
 }
